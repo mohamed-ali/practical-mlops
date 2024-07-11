@@ -7,3 +7,58 @@
 3. **البيئات المتسقة**: قم بتحميل التبعيات أو الحزم أو مجموعات البيانات المطلوبة لتدفقات عمل التعلم الآلي الخاصة بك مسبقًا. وهذا يضمن بيئة متسقة عبر حالات دفتر الملاحظات المختلفة، مما يقلل من وقت الإعداد ويقلل من احتمالية حدوث أخطاء أو تناقضات.
 4. **الإعداد التلقائي**: قم بأتمتة تثبيت وتكوين الأدوات أو المكتبات أو الأطر المطلوبة لحالات الاستخدام المحددة لديك. وهذا يبسط عملية الإعداد ويقلل من الجهد اليدوي المطلوب، مما يسمح لك بالتركيز على مهام التعلم الآلي الأساسية لديك.
 5. **التخصيص**: قم بتخصيص بيئة دفتر الملاحظات وفقًا لاحتياجاتك المحددة من خلال تنفيذ البرامج النصية أو الأوامر المخصصة أثناء أحداث دورة الحياة. تمكنك هذه المرونة من تكييف البيئة مع متطلباتك الفريدة، مما يعزز الإنتاجية والكفاءة.
+
+## نصوص تكوين دورة الحياة
+
+هذه النصوص هي نصوص bash عادية يتم تشغيلها في كل مرة يتم فيها بدء تشغيل بيئة دفتر الملاحظات التي ترتبط بها.
+وبالتالي، يمكن استخدامها لتثبيت التبعيات، واستنساخ مستودعات git، وتكوين البيئة، وما إلى ذلك.
+بمجرد تشغيلها بنجاح، ستكون البيئة جاهزة للمستخدم مع تضمين جميع التكوينات داخل هذه النصوص.
+
+يقوم النص `jupyterlab-setup-lcc-script.sh` بتكوين:
+
+1. الإغلاق التلقائي للمثيلات التي يستخدمها دفتر ملاحظات SageMaker Jupyterlab إذا كانت خاملة لأكثر من 3600 ثانية.
+2. كما يقومون بتثبيت تبعيات Docker للسماح لك باستخدام [وضع SageMaker Local](https://docs.aws.amazon.com/sagemaker/latest/dg/pipelines-local-mode.html) عند تطوير وظائف ML وخطوط الأنابيب الخاصة بك.
+
+## تثبيت البرنامج أوامر إدارة دورة الحياة
+
+لتثبيت البرنامج النصي لتكوين دورة الحياة، اتبع التعليمات التالية:
+
+1. حدد معرف نطاق SageMaker الذي تريد تنشيط Docker فيه. يمكنك القيام بذلك من خلال وحدة تحكم SageMaker
+1. انتقل إلى [وحدة تحكم SageMaker](https://console.aws.amazon.com/sagemaker/home)، وتأكد من أنك في المنطقة الصحيحة.
+2. انقر فوق **المجالات** في لوحة التنقل اليسرى. سترى قائمة بالمجالات، انسخ معرف المجال ذي الصلة.
+2. استبدل `<DOMAIN_ID>` في الأمر التالي بمعرف المجال الخاص بك، ثم قم بتشغيله باستخدام AWS CloudShell لتمكين docker على المجال ذي الصلة
+```
+DOMAIN_ID="<DOMAIN_ID>"
+aws --region $AWS_REGION sagemaker update-domain --domain-id $DOMAIN_ID \
+--domain-settings-for-update '{"DockerSettings": {"EnableDockerAccess": "ENABLED"}}'
+```
+بعد ذلك، نتبع العملية المذكورة في [الوثائق الرسمية](https://docs.aws.amazon.com/sagemaker/latest/dg/jl-lcc-create.html) لإنشاء البرنامج النصي لتكوين دورة الحياة وربطه داخل `jupyterlab-setup-lcc-script.sh`
+بالمجال الذي تختاره. الخطوات موضحة أدناه:
+
+1. قم بتحميل البرنامج النصي `jupyterlab-setup-lcc-script.sh` إلى AWS CloudShell.
+2. قم بتشغيل الأمر أدناه لتخزين إصدار `base64` من البرنامج النصي في متغير البيئة LCC_CONTENT
+```
+LCC_CONTENT=`openssl base64 -A -in jupyterlab-setup-lcc-script.sh`
+```
+3. بعد ذلك، قم بتشغيل الأمر التالي لإنشاء تكوين دورة حياة يتم تشغيله عند تشغيل تطبيق JupyterLab المرتبط. سيتم إنشاء البرنامج النصي باسم `setup-jupyterlab-environment`.
+```
+aws sagemaker create-studio-lifecycle-config \
+--region $AWS_REGION \
+--studio-lifecycle-config-name setup-jupyterlab-environment \
+--studio-lifecycle-config-content $LCC_CONTENT \
+--studio-lifecycle-config-app-type JupyterLab
+```
+4. أخيرًا، قم بإرفاق البرنامج النصي لتكوين دورة الحياة بنطاقك، عن طريق تحديث `<DOMAIN_ID>`` في الأوامر التالية، ثم تشغيلها عبر AWS CloudShell.
+```
+AWS_ACCOUNT_ID=`aws sts get-caller-identity --query Account --output text`
+LCC_ARN="arn:aws:sagemaker:$AWS_REGION:$AWS_ACCOUNT_ID:studio-lifecycle-config/setup-jupyterlab-environment"
+aws sagemaker update-domain \
+--domain-id $DOMAIN_ID \
+--region $AWS_REGION \
+--default-user-settings "{
+\"JupyterLabAppSettings\": {
+\"LifecycleConfigArns\":
+[\"$LCC_ARN\"]
+}
+}"
+```
