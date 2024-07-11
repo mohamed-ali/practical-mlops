@@ -12,3 +12,27 @@ Lifecycle configuration scripts in SageMaker Domains and Notebooks allow you to 
 
 5. **Customization**: Tailor the notebook environment to your specific needs by executing custom scripts or commands during the lifecycle events. This flexibility enables you to adapt the environment to your unique requirements, enhancing productivity and efficiency.
 
+## Lifecycle Configuration Scripts
+
+These script are normal bash script that are run each time the notebook environment to which they are attached is started.
+Therefore, they can be used to install dependencies, clone git repositories, configure the envoronement, etc.
+Once run successfully the environment will be ready for the user with all the configuration within these scripts included.
+
+The script `jupyterlab-setup-lcc-script.sh` configures:
+
+1. Auto-shutdown of instances used by SageMaker Jupyterlab notebook if they are idle for more than 3600 seconds.
+2. They also install docker dependencies to allow you to use the SageMaker Local mode when development your ML jobs and pipelines.
+
+
+## Installing the lifecycle configuration script
+
+To install the lifecycle configuration script, follow the instruction below:
+
+1. Identify the SageMaker Domain ID where you want to activate docker. You can do this through the SageMaker Console
+    1. Go to [SageMaker Console](https://console.aws.amazon.com/sagemaker/home), make sure you are in the correct region.
+    2. Click on **Domains** in the left navigation panel. You will see a list of domain, copy the Id of the relevant domain.
+2. Replace `<DOMAIN_ID>` in the following command with your domain-id, then run it using AWS CloudShell to enable docker on the relevant domain
+```bash
+aws --region $AWS_REGION sagemaker update-domain --domain-id "<DOMAIN_ID>" --domain-settings-for-update '{"DockerSettings": {"EnableDockerAccess": "ENABLED"}}'
+```
+3. todo
