@@ -18,7 +18,7 @@ emails:
 
 بمجرد الانتهاء، قم بتثبيت الحل عن طريق تشغيل الأوامر أدناه في طرفية أومر - terminal - تحتوي على aws cdk. يمكنك استعمال طرفية أومر مُعدّة مُسبقًا باستخدام بيئة AWS Cloud9 أو AWS CloudShell،  كما يُمكنك تثبيت AWS CDK على طرفية الأوامر في بيئة عملك المحلية.
 
-1. انتقل إلى الدليل `cd sagemaker-pipelines-monitoring`.
+1. انتقل إلى المجلد `cd sagemaker-pipelines-monitoring`.
 2. قم بتثبيت التبعيات – dependencies – بالأمر `npm clean-install`
 3. قم بإعداد cdk في حساب AWS الخاص بك عبر `npx cdk bootstrap`
 5. قم بنشر الحل `npx cdk deploy`
