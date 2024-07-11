@@ -21,7 +21,7 @@ Once run successfully the environment will be ready for the user with all the co
 The script `jupyterlab-setup-lcc-script.sh` configures:
 
 1. Auto-shutdown of instances used by SageMaker Jupyterlab notebook if they are idle for more than 3600 seconds.
-2. They also install docker dependencies to allow you to use the SageMaker Local mode when development your ML jobs and pipelines.
+2. They also install docker dependencies to allow you to use the [SageMaker Local mode](https://docs.aws.amazon.com/sagemaker/latest/dg/pipelines-local-mode.html) when development your ML jobs and pipelines.
 
 
 ## Installing the lifecycle configuration script
@@ -33,6 +33,36 @@ To install the lifecycle configuration script, follow the instruction below:
     2. Click on **Domains** in the left navigation panel. You will see a list of domain, copy the Id of the relevant domain.
 2. Replace `<DOMAIN_ID>` in the following command with your domain-id, then run it using AWS CloudShell to enable docker on the relevant domain
 ```bash
-aws --region $AWS_REGION sagemaker update-domain --domain-id "<DOMAIN_ID>" --domain-settings-for-update '{"DockerSettings": {"EnableDockerAccess": "ENABLED"}}'
+aws --region $AWS_REGION sagemaker update-domain --domain-id "<DOMAIN_ID>" \
+    --domain-settings-for-update '{"DockerSettings": {"EnableDockerAccess": "ENABLED"}}'
 ```
-3. todo
+Next we follow the process in the [official documentation](https://docs.aws.amazon.com/sagemaker/latest/dg/jl-lcc-create.html) to create and associate the lifecycle configuration script inside `jupyterlab-setup-lcc-script.sh`
+to your domain of of choice. The steps are outlined below:
+
+1. Upload the script `jupyterlab-setup-lcc-script.sh` to AWS CloudShell.
+2. Run the command below to store a `base64` version of the script in the environment variable LCC_CONTENT
+```
+LCC_CONTENT=`openssl base64 -A -in jupyterlab-setup-lcc-script.sh`
+```
+3. Next, run the following command to create a lifecycle configuration that runs when you launch an associated JupyterLab application. The script will be created with the name `setup-jupyterlab-environment`.
+```
+aws sagemaker create-studio-lifecycle-config \
+--region $AWS_REGION \
+--studio-lifecycle-config-name setup-jupyterlab-environment \
+--studio-lifecycle-config-content $LCC_CONTENT \
+--studio-lifecycle-config-app-type JupyterLab
+```
+4. Finally attach the lifecycle configuration script to your domain, by updating the `<DOMAIN_ID>` in the following commands, then running them through AWS CloudShell.
+```
+AWS_ACCOUNT_ID=`aws sts get-caller-identity --query Account --output text`
+LCC_ARN="arn:aws:sagemaker:$AWS_REGION:$AWS_ACCOUNT_ID:studio-lifecycle-config/setup-jupyterlab-environment"
+aws sagemaker update-domain \
+--domain-id $DOMAIN_ID \
+--region $AWS_REGION \
+--default-user-settings "{
+  \"JupyterLabAppSettings\": {
+    \"LifecycleConfigArns\":
+      [\"$LCC_ARN\"]
+  }
+}"
+```
