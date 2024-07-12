@@ -22,7 +22,17 @@ The script `jupyterlab-setup-lcc-script.sh` configures:
 
 ## Installing the lifecycle configuration script
 
-To install the lifecycle configuration script, follow the instruction below:
+### Option 1: Install using `install-lcc-script.sh`
+
+You can install the script `jupyterlab-setup-lcc-script.sh` lifecycle configuration script using the installation script `install-lcc-script.sh` by upload both scripts to AWS CloudShell or Cloud9 and running the following command.
+
+```
+install-lcc-script.sh <domain_id> <lifecycle_config_name>
+```
+
+### Option 2: Install the LCC script step-by-step
+
+To install the lifecycle configuration script step-by-step or understand the steps required to install it, follow the instruction below:
 
 1. Identify the SageMaker Domain ID where you want to activate docker. You can do this through the SageMaker Console
     1. Go to [SageMaker Console](https://console.aws.amazon.com/sagemaker/home), make sure you are in the correct region.
