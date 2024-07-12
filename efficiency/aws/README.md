@@ -58,7 +58,7 @@ aws sagemaker create-studio-lifecycle-config \
 --studio-lifecycle-config-content $LCC_CONTENT \
 --studio-lifecycle-config-app-type JupyterLab
 ```
-4. أخيرًا، قم بإرفاق البرنامج النصي لتكوين دورة الحياة بنطاقك، عن طريق تحديث `<DOMAIN_ID>`` في الأوامر التالية، ثم تشغيلها عبر AWS CloudShell.
+4. أخيرًا، قم بإرفاق البرنامج النصي لتكوين دورة الحياة بنطاقك، عن طريق تحديث `<DOMAIN_ID>`  في الأوامر التالية، ثم تشغيلها عبر AWS CloudShell.
 ```
 AWS_ACCOUNT_ID=`aws sts get-caller-identity --query Account --output text`
 LCC_ARN="arn:aws:sagemaker:$AWS_REGION:$AWS_ACCOUNT_ID:studio-lifecycle-config/setup-jupyterlab-environment"
