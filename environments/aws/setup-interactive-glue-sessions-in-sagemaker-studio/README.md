@@ -1,4 +1,4 @@
-وفقًا للوثائق الرسمية (https://docs.aws.amazon.com/glue/latest/dg/interactive-sessions-sagemaker-studio.html):
+وفقًا [للوثائق الرسمية](https://docs.aws.amazon.com/glue/latest/dg/interactive-sessions-sagemaker-studio.html):
 
 > AWS Glue Interactive Sessions هي بيئة تشغيل Apache Spark بدون خادم عند الطلب يمكن لعلماء البيانات والمهندسين استخدامها لبناء تطبيقات تحليلات وإعداد البيانات واختبارها وتشغيلها بسرعة. يمكنك بدء جلسة تفاعلية في AWS Glue من خلال بدء تشغيل دفتر ملاحظات Amazon SageMaker Studio Classic.
 
@@ -13,7 +13,7 @@
 حدد دور تنفيذ SageMaker لنطاق SageMaker حيث تريد استخدام جلسات Glue التفاعلية. بعد ذلك، افتح AWS CloudShell وقم بتصديره كمتغير بيئة:
 
 ```bash
-export SAGEMAKER_ROLE_NAME=AmazonSageMaker-ExecutionRole-20240712T150567
+export SAGEMAKER_ROLE_NAME=AmazonSageMaker-ExecutionRole-XXXXXXXXXXXXX
 ```
 
 2. **إرفاق السياسة المُدارة**
