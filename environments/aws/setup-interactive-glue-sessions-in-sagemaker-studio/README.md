@@ -1,8 +1,8 @@
 وفقًا [للوثائق الرسمية](https://docs.aws.amazon.com/glue/latest/dg/interactive-sessions-sagemaker-studio.html):
 
-> AWS Glue Interactive Sessions هي بيئة تشغيل Apache Spark بدون خادم عند الطلب يمكن لعلماء البيانات والمهندسين استخدامها لبناء تطبيقات تحليلات وإعداد البيانات واختبارها وتشغيلها بسرعة. يمكنك بدء جلسة تفاعلية في AWS Glue من خلال بدء تشغيل دفتر ملاحظات Amazon SageMaker Studio Classic.
+ > تعبر AWS Glue Interactive Sessions بيئة تشغيل لتطبيقات Apache Spark مُتوفرة عند الطلب ولا تحتاج لإعداد مُسبق. يُمكن لعلماء البيانات والمهندسين استخدامها لبناء تطبيقات لتحليل وإعداد البيانات واختبار هذه التطبيقات وتشغيلها بسرعة. عمليًّا، يمكنك بدء نَوبة تفاعلية - interactive session - في AWS Glue من خلال تشغيل دفتر ملاحظات JupyterLab بعد إختيار نواة العمل المُناسبة.
 
-باختصار، هذه الجلسات التفاعلية مناسبة تمامًا لكتابة وتصحيح أخطاء كود PySpark بشكل أسرع.
+باختصار، هذه النوبة التفاعلية مناسبة لكتابة وتصحيح أخطاء كود PySpark بشكل أسرع.
 
 لاستخدام هذه الجلسات في دفاتر ملاحظات JupyterLab داخل SageMaker Studio، يجب توسيع دور تنفيذ SageMaker بأذونات IAM إضافية. تم توضيح أذونات IAM الإضافية في [الوثائق](https://docs.aws.amazon.com/sagemaker/latest/dg/getting-started-glue-sm.html).
 
