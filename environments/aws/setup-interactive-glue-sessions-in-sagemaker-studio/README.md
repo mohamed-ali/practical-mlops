@@ -21,7 +21,7 @@ export SAGEMAKER_ROLE_NAME=AmazonSageMaker-ExecutionRole-XXXXXXXXXXXXX
 بعد ذلك، قم بتشغيل الأمر التالي في AWS CloudShell لتوسيع دور تنفيذ SageMaker بالسياسة المُدارة `AwsGlueSessionUserRestrictedServiceRole`:
 
 ```bash
-aws iam Attach-role-policy \
+aws iam attach-role-policy \
 --role-name $SAGEMAKER_ROLE_NAME \
 --policy-arn arn:aws:iam::aws:policy/service-role/AwsGlueSessionUserRestrictedServiceRole
 ```
