@@ -65,7 +65,7 @@ def handler(event, context):
     topic_to_team_mapping = [
         {
             "topic_id": "id",
-            "teams_email": "your-ml-teamg@yourcompany.com"",
+            "teams_email": "your-ml-teamg@yourcompany.com",
             "pipelines": ["p1"],
         }
     ]
