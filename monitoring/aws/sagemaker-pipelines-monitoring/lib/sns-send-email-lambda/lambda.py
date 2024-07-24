@@ -60,12 +60,12 @@ def handler(event, context):
     # the same lambda function can be used, with a mapping configuration as below
     # to decide to whom the notification should be sent for a current pipeline.
     # topic_to_team_mapping = [
-    #     {"topic_id": "id", "teams_email": "team-forecasting@jumia.com", "pipelines": ["p1"]}
+    #     {"topic_id": "id", "teams_email": "your-ml-teamg@yourcompany.com", "pipelines": ["p1"]}
     # ]
     topic_to_team_mapping = [
         {
             "topic_id": "id",
-            "teams_email": "team-forecasting@jumia.com",
+            "teams_email": "your-ml-teamg@yourcompany.com"",
             "pipelines": ["p1"],
         }
     ]
