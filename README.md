@@ -1,3 +1,6 @@
+
+Open README.en.md for english version.
+
 ## أمثلة تطبيقية لتنفيذ عمليّات التعلُّم الآلي
 
 
