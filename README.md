@@ -1,5 +1,5 @@
 
-Open README.en.md for english version.
+Open [README.en.md](./README.en.md) for english version.
 
 ## أمثلة تطبيقية لتنفيذ عمليّات التعلُّم الآلي
 
