@@ -10,7 +10,7 @@ export class SagemakerDomainWithCodeEditorStack extends cdk.Stack {
 
     // import existing default VPC
     const existingDefaultVpc = ec2.Vpc.fromLookup(this, 'ExistingDefaultVPC', {isDefault: true});
-
+    this.account
      // Create a SageMaker execution role
     const sagemakerExecutionRole = new iam.Role(this, 'SageMakerExecutionRole', {
       assumedBy: new iam.ServicePrincipal('sagemaker.amazonaws.com'),
@@ -20,6 +20,20 @@ export class SagemakerDomainWithCodeEditorStack extends cdk.Stack {
         iam.ManagedPolicy.fromAwsManagedPolicyName('AWSCloudFormationFullAccess'),
         iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMReadOnlyAccess'),
       ],
+      inlinePolicies: {
+        AssumeDeployRole: new iam.PolicyDocument({
+          statements: [
+            new iam.PolicyStatement({
+              effect: iam.Effect.ALLOW,
+              actions: ['sts:AssumeRole'],
+              resources: [
+                `arn:aws:iam::${this.account}:role/cdk-*-deploy-role-${this.account}-${this.region}`,
+                `arn:aws:iam::${this.account}:role/cdk-*-file-publishing-role-${this.account}-${this.region}`,
+              ],
+            }),
+          ],
+        }),
+      },
     });
 
     // Create a SageMaker Domain
