@@ -16,6 +16,9 @@ export class SagemakerDomainWithCodeEditorStack extends cdk.Stack {
       assumedBy: new iam.ServicePrincipal('sagemaker.amazonaws.com'),
       managedPolicies: [
         iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonSageMakerFullAccess'),
+        // required to work with CDK from vscode in SageMaker
+        iam.ManagedPolicy.fromAwsManagedPolicyName('AWSCloudFormationFullAccess'),
+        iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMReadOnlyAccess'),
       ],
     });
 
